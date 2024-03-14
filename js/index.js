@@ -66,7 +66,7 @@ function createMovieHTML(movie){
                 </svg>
               </button>
             </div>
-            <h2 class="font-semibold uppercase">${movie.Type}</h2>
+            <a href="movie.html?i=${movie.imdbID}"><h2 class="font-semibold uppercase">${movie.Type}</h2></a>
           </div>
         </div>
       </div>`;
@@ -84,7 +84,6 @@ function addToFavorites(button, movieString) {
   }
   moviesArray.push(movie);
   localStorage.setItem('imdbData', JSON.stringify(moviesArray));
-  console.log(button)
   const heartIcon = button.querySelector('svg');
   heartIcon.setAttribute('fill', 'red');
   alert(`${movie.Title} Added to favourites!`);
