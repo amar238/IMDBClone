@@ -1,8 +1,8 @@
+// target div
 const movieList = document.getElementById('movie-list');
-
-
+// call to initiate page
 displayFavoriteMovies();
-
+// fetch movies from local storage and display
 function displayFavoriteMovies(){
     movieList.innerHTML=''    //clear last movie list
     const movieData = JSON.parse(localStorage.getItem('imdbData')) || [];
@@ -10,7 +10,7 @@ function displayFavoriteMovies(){
         movieList.innerHTML+=createMovieHTML(movie);
     })
 }
-
+// add movie card to html
 function createMovieHTML(movie){
     const movieImage = movie.Poster === 'N/A' || movie.Poster === undefined
         ? `<img src="../image_not_found.png" width="200" height="200" alt="Placeholder"/>`
@@ -50,7 +50,7 @@ function createMovieHTML(movie){
         </div>
       </div>`;
 }
-
+// delete movie from favorites
 function deleteFavorite(id){
     const moviesArray = JSON.parse(localStorage.getItem('imdbData')) || [];
     const filteredData = moviesArray.filter((movie) => movie.imdbID !== id);

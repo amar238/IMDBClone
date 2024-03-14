@@ -1,14 +1,19 @@
 const apiKey = '2277dc53';
+// get movie id from params
 let pageUrl = window.location.href;
 let params = (new URL(pageUrl)).searchParams;
 const id = params.get('i');
+
+// get target div to insert movie details
 var movieDetails = document.getElementById('movie-details');
+
+// call to render page
 renderMoiePage();
 
+// render movie details
 async function renderMoiePage() {
     try {
         const movie = await getMovieById(id);
-
         if (movie.Response == 'True') {
             renderMovieDetails(movie);
         } else {
@@ -18,15 +23,15 @@ async function renderMoiePage() {
         showError('Error fetching movie details:', error);
     }
 };
-
+// fetch details from api 
 async function getMovieById(id){
     const url = `http://www.omdbapi.com/?apikey=${apiKey}&i=${id}`;
     const response = await fetch(url);
     const data = await response.json();
-
     return data;
 }
 
+// insert movie info into html
 async function renderMovieDetails(movie){
     movieDetails.innerHTML='';
     const movieImage = movie.Poster === 'N/A' || movie.Poster === undefined
@@ -50,8 +55,4 @@ async function renderMovieDetails(movie){
                 <p><b>Language:</b> ${movie.Language}</p>
             </div>
         </div>`
-}
-
-async function showError(error){
-
 }

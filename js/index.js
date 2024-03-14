@@ -4,36 +4,38 @@ const searchResults = document.getElementById('movie-list');
 
 // function to get list of moviews based on passed query
 async function searchMovies(query) {
-    const url = `http://www.omdbapi.com/?apikey=${apiKey}&s=${query}`;
-    const response = await fetch(url);
-    const data = await response.json();
-    return data.Search || [];
+  const url = `http://www.omdbapi.com/?apikey=${apiKey}&s=${query}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.Search || [];
 }
 
 // Event listener for keystrokes in the search input field
-searchInput.addEventListener('input', async function() {
-  
-    const query = searchInput.value
-    if (query.length > 2) { // Perform search when at least 3 characters are entered
-        const results = await searchMovies(query);
-        displaySearchResults(results);
-    } 
+searchInput.addEventListener('input', async function () {
+
+  const query = searchInput.value
+  if (query.length > 2) { // Perform search when at least 3 characters are entered
+    const results = await searchMovies(query);
+    displaySearchResults(results);
+  }
 });
 
-function displaySearchResults(results){
-    searchResults.innerHTML=''    //clear last movie list
-    results.forEach(movie=>{
-        searchResults.innerHTML+=createMovieHTML(movie);
-    })
+// render target div movie-list
+function displaySearchResults(results) {
+  searchResults.innerHTML = ''    //clear last movie list
+  results.forEach(movie => {
+    searchResults.innerHTML += createMovieHTML(movie);
+  })
 
 }
 
-function createMovieHTML(movie){
-    const movieImage = movie.Poster === 'N/A' || movie.Poster === undefined
-        ? `<img src="../image_not_found.png" width="200" height="200" alt="Placeholder"/>`
-        : `<img src="${movie.Poster}" width="200" height="200" alt="Movie poster"/>`;
+// create movie card
+function createMovieHTML(movie) {
+  const movieImage = movie.Poster === 'N/A' || movie.Poster === undefined
+    ? `<img src="../image_not_found.png" width="200" height="200" alt="Placeholder"/>`
+    : `<img src="${movie.Poster}" width="200" height="200" alt="Movie poster"/>`;
 
-    return `
+  return `
       <div class="rounded-lg border bg-card text-card-foreground shadow-sm" >
         <div class="p-4 flex flex-col items-center gap-4 h-full">
           <div class="flex flex-grow items-center justify-center ">
@@ -42,7 +44,7 @@ function createMovieHTML(movie){
           <div class="flex flex-col items-center gap-2">
             <h2 class="font-semibold">${movie.Title}</h2>
             <div class="flex items-center gap-2">
-              <span>${movie.Year.substring(0,4)}</span>
+              <span>${movie.Year.substring(0, 4)}</span>
               <button id="addFavorite${movie.imdbID}"
               onclick="addToFavorites(this,'${encodeURIComponent(JSON.stringify(movie))}')"
                 class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium 
@@ -72,15 +74,15 @@ function createMovieHTML(movie){
       </div>`;
 }
 
+// add to favorite
 function addToFavorites(button, movieString) {
   var decodedString = decodeURIComponent(movieString);
   var movie = JSON.parse(decodedString);
   let moviesArray = JSON.parse(localStorage.getItem('imdbData')) || [];
   let alreadyExists = moviesArray.some(existingMovie => existingMovie.imdbID === movie.imdbID);
-
   if (alreadyExists) {
-      alert('Movie already exists.');
-      return;
+    alert('Movie already exists.');
+    return;
   }
   moviesArray.push(movie);
   localStorage.setItem('imdbData', JSON.stringify(moviesArray));
