@@ -25,7 +25,7 @@ async function renderMoiePage() {
 };
 // fetch details from api 
 async function getMovieById(id){
-    const url = `http://www.omdbapi.com/?apikey=${apiKey}&i=${id}`;
+    const url = `https://www.omdbapi.com/?apikey=${apiKey}&i=${id}`;
     const response = await fetch(url);
     const data = await response.json();
     return data;
